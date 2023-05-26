@@ -11,7 +11,6 @@ const getTask = asyncWrapper(
          if(!getTaskAll){
             res.status(404).json({MessageChannel : "Not found data :;"})
          }
-         console.log({getTaskAll})
           res.status(200).json({getTaskAll})
          
 })

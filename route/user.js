@@ -6,6 +6,7 @@ const {
     userQuery,
     create_user,
     find_user,
+   
 
 } = require("../controller/user")
 
@@ -14,5 +15,7 @@ const {
 route.get("/", userQuery)
 route.post('/create', create_user)
 route.get('/:id',find_user)
+
+
 
 module.exports = route
