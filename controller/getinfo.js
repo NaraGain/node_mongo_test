@@ -1,30 +1,47 @@
 const {ConnectDb} = require('../conc.js')
-const task = require('../models/task')
+const tasks = require('../models/task')
 const asyncWrapper = require('../middleware/asyncWrapper')
 
 
 
 //get all task function or method
-const getAll = asyncWrapper(
+const getTask = asyncWrapper(
     async (req,res)=>{
-         const getTaskAll = await task.find({})
+         const getTaskAll = await tasks.find({})
+         if(!getTaskAll){
+            res.status(404).json({MessageChannel : "Not found data :;"})
+         }
+         console.log({getTaskAll})
           res.status(200).json({getTaskAll})
+         
 })
 
 //create task function
 const createTask = asyncWrapper(
 async (req,res)=>{
-    const Task = await task.create(req.body)
-     res.status(200).json(req.body)
+     let task_input = new tasks({
+        title : req.body.title,
+        desc : req.body.desc
+     })
+
+     task_input = await task_input.save()
+     if(!task_input){
+        return res.status(404).send('Task cannot be created')
+     }
+       
+    
+    res.status(200).json({task_input})
+    
+     
 })
 
 //get task by id method
-const getTask = asyncWrapper(
+const getTask_id = asyncWrapper(
 async (req,res)=>{
     const {id: taskID} = req.params
-    const taskId = await task.findOne({_id: taskID})
+    const taskId = await tasks.findOne({_id: taskID})
      if(!taskId){
-        res.status(404).json({mgs:`No Task Found ${task}`})
+        res.status(404).json({mgs:`No Task Found ${tasks}`})
         }
     res.status(200).json({taskId})
 })
@@ -33,7 +50,7 @@ async (req,res)=>{
 const updateTask = asyncWrapper(
 async(req,res)=>{
     const {id: taskID} = req.params
-    const taskUpdate = await task.findByIdAndUpdate({_id: taskID},req.body)
+    const taskUpdate = await tasks.findByIdAndUpdate({_id: taskID},req.body)
     if(!taskUpdate){
          res.status(404).json({mgs:`No Task Found ${taskUpdate}`})
         }
@@ -44,7 +61,7 @@ async(req,res)=>{
 const deleteTask = asyncWrapper( 
 async (req,res)=>{
   const {id: TaskID} = req.params
-  const taskDelete = await task.findByIdAndDelete({_id: TaskID})
+  const taskDelete = await tasks.findByIdAndDelete({_id: TaskID})
     if(!taskDelete){
         res.status(404).json({mgs:`No Task Found ${taskDelete}`})
     }
@@ -56,8 +73,8 @@ async (req,res)=>{
 //export module export function 
 module.exports = {
     createTask,
-    getAll,
     getTask,
+    getTask_id,
     updateTask,
     deleteTask,
 }

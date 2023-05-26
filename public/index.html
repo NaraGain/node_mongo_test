@@ -7,6 +7,8 @@
     <!-- favicon -->
   <!-- Latest compiled and minified CSS -->
   <title>Task Manager</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
 
 <!-- jQuery library -->
@@ -19,23 +21,48 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
   </head>
   <body>
-    <div class="container">
+    <div class="container my-3 p-3">
     <form class="task-form">
-      <h4>task manager</h4>
-      <div>
+      <h4>Create Task</h4>
+      <div class="form-group">
         <input
+        class="form-control"
           type="text"
-          name="name"
-          class="task-input"
-          placeholder="e.g. wash dishes"
+          name="title"
+         id="task-input"
+          placeholder="Enter task"
         />
-        <button type="submit" class="btn submit-btn btn-block bg-info">submit</button>
+
+        <input
+        class="form-control m-2"
+          type="text"
+          name="desc"
+          id="task-inputtwo"
+          placeholder="Enter description"
+        />
+
+        <div class="startTask">
+          <label for="">Start</label>
+          <input  class="" type="date"/>
+        <label for="">Time</label>
+       <input  class="" type="time"/>
+        </div>
+
+        <div class="endTask">
+          <label for="">End</label>
+       <input  class="" type="date"/>
+       <label for="">Time</label>
+       <input  class="" type="time"/>
+       </div>
+        <button type="submit" class="btn submit-btn btn-block bg-info mt-3 text-light" 
+        style="border-radius:2px">submit</button>
+        
       </div>
       <div class="form-alert"></div>
     </form>
     <section class="tasks-container">
-      <p class="loading-text">Loading...</p>
-      <div id="tasks"></div>
+      <p class="loading-text"></p>
+      <div class="tasks"></div>
     </section>
     </div>
     <!-- axios -->
