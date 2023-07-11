@@ -1,0 +1,24 @@
+
+
+
+
+.btn-delete {
+    border: none;
+    color :red;
+    margin: 2px;
+    background-color: none;
+
+}
+.btn-update{
+
+    color :red;
+}
+
+.startTask {
+    padding-bottom: 12px;
+    margin-top: 20px;
+}
+
+input {
+    margin-left: 10px;
+}
