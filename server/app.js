@@ -1,18 +1,24 @@
 require('dotenv').config()
 
-const express = require('express')
-const app = express()
-const cors = require('cors')
-const {ConnectDb} = require('./conc')
+const express = require('express');
+const app = express();
+const cors = require('cors');
+const {ConnectDb} = require('./conc');
 const errorHandlerMiddleware = require('./middleware/errorHandlerMiddleware')
 const notFound = require('./middleware/notFound')
 const taskRoute = require('./route/task');
-const userRoute = require('./route/user')
+const userRoute = require('./route/user');
+const auth = require("./middleware/auth");
+
+
 app.use(express.static('./public'))
 app.use(express.json())
 app.use(express.urlencoded())
 app.use(cors())
-
+//protect endpoint
+app.get('/auth-endpoint',auth, (req, res)=>{
+    res.json({message: "You are authorized to access me"});
+})
 
 
 
