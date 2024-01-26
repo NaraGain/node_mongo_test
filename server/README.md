@@ -1,47 +1,43 @@
-server file
-# Use an official Python runtime as a parent image
-FROM python:3.8-slim
+# Use the official Ubuntu image as the base
+FROM ubuntu:latest
 
-# Set the working directory to /app
-WORKDIR /app
+# Set non-interactive mode during build
+ENV DEBIAN_FRONTEND=noninteractive
 
-# Clone the Frappe framework from the official repository
-RUN git clone https://github.com/frappe/frappe-bench.git bench
-
-# Change the working directory to /app/bench
-WORKDIR /app/bench
-
-# Install Frappe dependencies
-RUN apt-get update && \
-    apt-get install -y \
+# Install required dependencies for Frappe Framework
+RUN apt-get update \
+    && apt-get install -y \
+        python3 \
+        python3-pip \
         build-essential \
-        libffi-dev \
         libssl-dev \
+        libffi-dev \
         libmysqlclient-dev \
-        libjpeg-dev \
-        libtiff5-dev \
-        libx11-dev \
-        libxext-dev \
-        zlib1g-dev \
-        libfreetype6-dev \
+        libjpeg8-dev \
         liblcms2-dev \
-        libwebp-dev \
-        tcl8.6-dev \
-        tk8.6-dev \
-        python-tk \
-        redis-tools \
-        redis-server \
-        wkhtmltopdf
+        libblas-dev \
+        liblapack-dev \
+        libatlas-base-dev \
+        libproj-dev \
+        wkhtmltopdf \
+        nodejs \
+        npm \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
-# Install Frappe
-RUN pip install -e ./apps/frappe --no-cache-dir
+# Upgrade pip and install Frappe Bench
+RUN pip3 install --upgrade pip \
+    && pip3 install frappe-bench
 
-# Create a new Frappe site
-RUN bench init frappe-bench --frappe-branch version-13
+# Create a new Frappe Bench
+RUN useradd -m frappe \
+    && su - frappe -c "bench init frappe-bench --frappe-branch version-13"
 
-# Expose ports for Frappe development
-EXPOSE 8000
-EXPOSE 9000
+# Expose ports for Frappe Bench
+EXPOSE 8000 9000
 
-# Set the default command to run Frappe development server
+# Set the working directory
+WORKDIR /home/frappe/frappe-bench
+
+# Run Frappe Bench
 CMD ["bench", "start"]
